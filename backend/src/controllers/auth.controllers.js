@@ -57,3 +57,4 @@ export const validateSessionCtrl = (req, res) => {
     user: req.user,
   });
 };
+
