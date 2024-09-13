@@ -60,10 +60,15 @@ export const todosPage = () => {
   th4.classList.add("border", "px-4", "py-2");
   th4.textContent = "Owner Id";
 
+  const th5 = document.createElement("th");
+  th5.classList.add("border", "px-4", "py-2");
+  th5.textContent = "Acciones";
+
   tr.appendChild(th1);
   tr.appendChild(th2);
   tr.appendChild(th3);
   tr.appendChild(th4);
+  tr.appendChild(th5);
 
   thead.appendChild(tr);
 
@@ -100,16 +105,95 @@ export const todosPage = () => {
         td4.classList.add("border", "px-4", "py-2");
         td4.textContent = todo.owner;
 
+        const td5 = document.createElement("td");
+        td5.classList.add("border", "px-4", "py-2");
+
+        const updateBtn = document.createElement("button");
+        updateBtn.classList.add("bg-yellow-500", "text-white", "p-2", "rounded", "hover:bg-yellow-600", "mr-2");
+        updateBtn.textContent = "Update";
+        updateBtn.addEventListener("click", () => {
+          openForm(todo);
+        });
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.classList.add("bg-red-500", "text-white", "p-2", "rounded", "hover:bg-red-600");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.addEventListener("click", () => {
+          tr.remove();
+        });
+
+        td5.appendChild(updateBtn);
+        td5.appendChild(deleteBtn);
+
         tr.appendChild(td1);
         tr.appendChild(td2);
         tr.appendChild(td3);
         tr.appendChild(td4);
+        tr.appendChild(td5);
         tbody.appendChild(tr);
       });
     });
 
+  const addTaskBtn = document.createElement("button");
+  addTaskBtn.classList.add("bg-green-500", "text-white", "p-2", "rounded", "hover:bg-green-600", "mb-4");
+  addTaskBtn.textContent = "Add New Task";
+  addTaskBtn.addEventListener("click", () => {
+    openForm();
+  });
+
+  container.appendChild(btnHome);
   container.appendChild(title);
+  container.appendChild(addTaskBtn);
   container.appendChild(table);
 
   return container;
+};
+
+const openForm = (todo = {}) => {
+  const formContainer = document.createElement("div");
+  formContainer.classList.add("fixed", "top-0", "left-0", "w-full", "h-full", "bg-black", "bg-opacity-50", "flex", "items-center", "justify-center");
+
+  const form = document.createElement("form");
+  form.classList.add("bg-white", "p-6", "rounded", "shadow-md");
+
+  const titleInput = document.createElement("input");
+  titleInput.classList.add("border", "p-2", "mb-4", "w-full");
+  titleInput.placeholder = "Title";
+  titleInput.value = todo.title || "";
+
+  const completedInput = document.createElement("input");
+  completedInput.type = "checkbox";
+  completedInput.classList.add("mb-4");
+  completedInput.checked = todo.completed || false;
+
+  const ownerInput = document.createElement("input");
+  ownerInput.classList.add("border", "p-2", "mb-4", "w-full");
+  ownerInput.placeholder = "Owner Id";
+  ownerInput.value = todo.owner || "";
+
+  const submitBtn = document.createElement("button");
+  submitBtn.classList.add("bg-blue-500", "text-white", "p-2", "rounded", "hover:bg-blue-600");
+  submitBtn.textContent = todo.id ? "Update Task" : "Add Task";
+  submitBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    // Aquí puedes agregar la lógica para enviar los datos al servidor
+    formContainer.remove();
+  });
+
+  const cancelBtn = document.createElement("button");
+  cancelBtn.classList.add("bg-gray-500", "text-white", "p-2", "rounded", "hover:bg-gray-600", "ml-2");
+  cancelBtn.textContent = "Cancel";
+  cancelBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    formContainer.remove();
+  });
+
+  form.appendChild(titleInput);
+  form.appendChild(completedInput);
+  form.appendChild(ownerInput);
+  form.appendChild(submitBtn);
+  form.appendChild(cancelBtn);
+
+  formContainer.appendChild(form);
+  document.body.appendChild(formContainer);
 };

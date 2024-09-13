@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { getAllTodosCtrl } from "../controllers/todos.controllers.js";
-import { createTodoCtrl } from "../controllers/todos.controllers.js";
-import { updateTodoCtrl } from "../controllers/todos.controllers.js";
-import { deleteTodoCtrl } from "../controllers/todos.controllers.js";
+import {
+  getAllTodosCtrl,
+  createTodoCtrl,
+  updateTodoCtrl,
+  deleteTodoCtrl,
+} from "../controllers/todos.controllers.js";
 import validateJwt from "../middlewares/validar-jwt.js";
-
 
 const todosRouter = Router();
 
@@ -13,6 +14,6 @@ todosRouter.post("/", validateJwt, createTodoCtrl);
 todosRouter.put("/:id", validateJwt, updateTodoCtrl);
 todosRouter.delete("/:id", validateJwt, deleteTodoCtrl);
 
+const TODOS_ENDPOINT = "/api/todos"; // Define la URL base del endpoint
 
-
-export { todosRouter };
+export { todosRouter, TODOS_ENDPOINT };
