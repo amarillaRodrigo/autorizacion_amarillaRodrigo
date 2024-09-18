@@ -16,10 +16,10 @@ export const createTodoCtrl = (req, res) => {
 
   if (!title) {
     console.log("Title is missing");
-    return res.status(400).json({ message: "El título es requerido" });
+    return res.status(400).json({ message: "El título no puede estar vacío" });
   } else if (typeof title !== "string") {
     console.log("Title is not a string");
-    return res.status(400).json({ message: "El título debe ser un string" });
+    return res.status(400).json({ message: "El título debe ser un texto" });
   } else if (title.length < 3) {
     console.log("Title is too short");
     return res
@@ -36,11 +36,14 @@ export const createTodoCtrl = (req, res) => {
     console.log("Completed status is not a boolean");
     return res
       .status(400)
-      .json({ message: "El estado de la tarea debe ser un booleano" });
+      .json({ message: "El estado de la tarea debe ser verdadero o falso" });
   }
 
   // Encontrar el ID máximo existente en la base de datos
-  const maxId = database.todos.reduce((max, todo) => (todo.id > max ? todo.id : max), 0);
+  const maxId = database.todos.reduce(
+    (max, todo) => (todo.id > max ? todo.id : max),
+    0
+  );
 
   const newTodo = {
     id: maxId + 1, // Asignar un nuevo ID único
@@ -69,9 +72,9 @@ export const updateTodoCtrl = (req, res) => {
   });
 
   if (!title) {
-    return res.status(400).json({ message: "El título es requerido" });
+    return res.status(400).json({ message: "El título no puede estar vacío" });
   } else if (typeof title !== "string") {
-    return res.status(400).json({ message: "El título debe ser un string" });
+    return res.status(400).json({ message: "El título debe ser un texto" });
   } else if (title.length < 3) {
     return res
       .status(400)
@@ -85,7 +88,7 @@ export const updateTodoCtrl = (req, res) => {
   } else if (typeof completed !== "boolean") {
     return res
       .status(400)
-      .json({ message: "El estado de la tarea debe ser un booleano" });
+      .json({ message: "El estado de la tarea debe ser verdadero o falso" });
   }
 
   const todoIndex = database.todos.findIndex((todo) => todo.id === Number(id));

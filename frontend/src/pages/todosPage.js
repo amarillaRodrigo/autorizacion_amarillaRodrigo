@@ -4,7 +4,7 @@ const fetchTodos = (tbody) => {
   })
     .then((response) => {
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`Error al obtener tareas`);
       }
       return response.json();
     })
@@ -62,16 +62,18 @@ const fetchTodos = (tbody) => {
           })
             .then((response) => {
               if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                return response.json().then((data) => {
+                  throw new Error(data.message);
+                });
               }
               return response.json();
             })
             .then((data) => {
-              console.log("Tarea eliminada:", data);
+              alert(data.message);
               fetchTodos(tbody); // Volver a obtener la lista de tareas
             })
             .catch((error) => {
-              console.error("Error al eliminar tarea:", error);
+              alert("Error al eliminar tarea: " + error.message);
             });
         });
 
@@ -87,7 +89,7 @@ const fetchTodos = (tbody) => {
       });
     })
     .catch((error) => {
-      console.error("Error al obtener tareas:", error);
+      alert(error.message);
     });
 };
 
@@ -154,17 +156,19 @@ const showModal = (todo, tbody) => {
       })
         .then((response) => {
           if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            return response.json().then((data) => {
+              throw new Error(data.message);
+            });
           }
           return response.json();
         })
         .then((data) => {
-          console.log("Tarea actualizada:", data);
+          alert(data.message);
           modal.remove();
           fetchTodos(tbody); // Volver a obtener la lista de tareas
         })
         .catch((error) => {
-          console.error("Error al actualizar tarea:", error);
+          alert("Error al actualizar tarea: " + error.message);
         });
     } else {
       const newTodo = {
@@ -182,17 +186,19 @@ const showModal = (todo, tbody) => {
       })
         .then((response) => {
           if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            return response.json().then((data) => {
+              throw new Error(data.message);
+            });
           }
           return response.json();
         })
         .then((data) => {
-          console.log("Tarea agregada:", data);
+          alert(data.message);
           modal.remove();
           fetchTodos(tbody); // Volver a obtener la lista de tareas
         })
         .catch((error) => {
-          console.error("Error al agregar tarea:", error);
+          alert("Error al agregar tarea: " + error.message);
         });
     }
   });
